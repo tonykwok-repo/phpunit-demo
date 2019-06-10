@@ -1,30 +1,74 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
-version: 2
-jobs:
-  build:
+# .circleci/config.yml
+
+references:
+  WP_CORE_DIR: &WP_CORE_DIR
+    /tmp/wordpress
+  WP_HOST: &WP_HOST
+    passwords-evolved.test
+  WP_ORG_PLUGIN_NAME: &WP_ORG_PLUGIN_NAME
+    passwords-evolved
+  WP_ORG_USERNAME: &WP_ORG_USERNAME
+    tonyk
+
+  container_config: &container_config
     docker:
-      # specify the version you desire here
-      - image: circleci/php:7.1-browsers
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
-    working_directory: ~/repo
+      - image: circleci/php:7.2
+    environment:
+      - WP_CORE_DIR: *WP_CORE_DIR
+      - WP_HOST: *WP_HOST
+      - WP_ORG_PLUGIN_NAME: *WP_ORG_PLUGIN_NAME
+      - WP_ORG_USERNAME: *WP_ORG_USERNAME
+    working_directory: ~/passwords-evolved
+
+  workspace_root: &workspace_root
+    /tmp
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
+  copy_vendor: &copy_vendor
+    run:
+      name: Copy vendor directory
+      command: cp -R /tmp/vendor .
+
+  phpunit_job: &phpunit_job
+    <<: *container_config
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "composer.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-      - run: composer install -n --prefer-dist
-      - save_cache:
-          paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
-      # run tests!
-      - run: ./vendor/bin/phpunit test_basic_theme.php
+      - *attach_workspace
+      - *copy_vendor
+      - run:
+          name: Run PHP unit tests
+          command: vendor/bin/phpunit test_basic_theme.php
+
+jobs:
+  test_php72:
+    <<: *phpunit_job
+    docker:
+      - image: circleci/php:7.2
+
+  test_php71:
+    <<: *phpunit_job
+    docker:
+      - image: circleci/php:7.1
+
+  test_php70:
+    <<: *phpunit_job
+    docker:
+      - image: circleci/php:7.0
+
+  test_php56:
+    <<: *phpunit_job
+    docker:
+      - image: circleci/php:5.6
+
+  test_php55:
+    <<: *phpunit_job
+    docker:
+      - image: vandries/phpenv:5.5
+
+  test_php54:
+    <<: *phpunit_job
+    docker:
+      - image: vandries/phpenv:5.4
