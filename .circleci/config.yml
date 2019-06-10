@@ -43,6 +43,11 @@ references:
           command: vendor/bin/phpunit test_basic_theme.php
 
 jobs:
+  build:
+    <<: *phpunit_job
+    docker:
+      - image: circleci/php:7.2
+
   test_php72:
     <<: *phpunit_job
     docker:
