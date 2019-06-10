@@ -27,4 +27,4 @@ jobs:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
       # run tests!
-      - run: ./vendor/bin/phpunit tests/test_basic_theme.php
+      - run: ./vendor/bin/phpunit test_basic_theme.php
