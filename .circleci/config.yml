@@ -1,44 +1,39 @@
-## Customize the test machine
-machine:
+workflows:
+  version: 2
+  main:
+    jobs:
+      - php72-build
 
-  timezone:
-    America/Los_Angeles # Set the timezone
-
-  # Version of php to use
-  php:
-    version: 7.2.8
-
-  # Add some environment variables
-  environment:
-    CIRCLE_ENV: test
-    WP_MULTISITE: 0
-    WP_CORE_DIR: /home/ubuntu/wordpress-develop
-    WP_TESTS_DIR: /home/ubuntu/wordpress-develop/tests/phpunit
-    plugin_loc: /home/ubuntu/$CIRCLE_PROJECT_REPONAME
-    plugin_slug: $CIRCLE_PROJECT_REPONAME
-    plugin_dir: /home/ubuntu/wordpress-develop/src/wp-content/plugins/$plugin_slug
-    plugin_tests_dir: /home/ubuntu/wordpress-develop/src/wp-content/plugins/$plugin_slug/tests
-
-
-## Customize dependencies
-dependencies:
-  pre:
-    #enable xdebug.  LINE 1/2 to uncomment if you want to run a code coverage report.
-    # - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
-    #setup WP install
-    - git clone git://develop.git.wordpress.org/ $WP_CORE_DIR;
-    - cd $WP_CORE_DIR && cp wp-tests-config-sample.php wp-tests-config.php && sed -i "s/youremptytestdbnamehere/wordpress_test/" wp-tests-config.php && sed -i "s/yourusernamehere/root/" wp-tests-config.php && sed -i "s/yourpasswordhere//" wp-tests-config.php;
-    # move plugin into tests/src
-    - mv $plugin_loc $plugin_dir;
-    # set up database
-    - mysql -e 'CREATE DATABASE wordpress_test;' -uroot;
-    # setup phpunit
-    - wget https://phar.phpunit.de/phpunit.phar && chmod +x phpunit.phar && mv phpunit.phar /home/ubuntu/.phpenv/shims/phpunit
-
-## tests override
-test:
-  override:
-    # comment out the below line to run a code coverage report.
-    - cd $plugin_tests_dir; phpunit
-    ## LINE 2/2 to uncomment if you want to run a code coverage report.
-    # - cd $plugin_tests_dir; phpunit --coverage-html $CIRCLE_ARTIFACTS
+version: 2
+jobs:
+  php72-build:
+    docker:
+      - image: circleci/php:7.2
+      - image: circleci/mysql:5.7
+    environment:
+      - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
+      - WP_CORE_DIR: "/tmp/wordpress/"
+    steps:
+      - checkout
+      - run:
+          name: "Setup Environment Variables"
+          command: |
+            echo "export PATH=$HOME/.composer/vendor/bin:$PATH" >> $BASH_ENV
+            source /home/circleci/.bashrc
+      - run:
+          name: "Install Dependencies"
+          command: |
+            sudo apt-get update && sudo apt-get install subversion
+            sudo docker-php-ext-install mysqli
+            sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
+            sudo apt-get update && sudo apt-get install mysql-client-5.7
+            git submodule update --init
+            composer global require "phpunit/phpunit=7.0.*"
+            composer global require wp-coding-standards/wpcs
+            phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+      - run:
+          name: "Run PHPUnit - Single Site"
+          command: |
+            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+            phpunit
