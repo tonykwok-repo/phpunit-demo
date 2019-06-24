@@ -37,6 +37,4 @@ before_script:
 
 script:
     - find -L . -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
-    - if [[ "$SNIFF" == "1" ]]; then jshint .; fi
-    - if [[ "$SNIFF" == "1" ]]; then jscs .; fi
-    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php; fi
+    - if [[ "$SNIFF" == "1" ]]; then php $PHPCS_DIR/bin/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php; fi
