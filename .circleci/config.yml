@@ -6,11 +6,11 @@ references:
   WP_CORE_DIR: &WP_CORE_DIR
     /tmp/wordpress
   WP_HOST: &WP_HOST
-    passwords-evolved.test
+    basic-theme.test
   WP_ORG_PLUGIN_NAME: &WP_ORG_PLUGIN_NAME
-    passwords-evolved
+    basic-theme
   WP_ORG_USERNAME: &WP_ORG_USERNAME
-    carlalexander
+    tonyk
 
   # Default container configuration
   #
