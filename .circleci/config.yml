@@ -2,13 +2,13 @@ workflows:
   version: 2
   main:
     jobs:
-      - php72-build
+      - php71-build
 
 version: 2
 jobs:
-  php72-build:
+  php71-build:
     docker:
-      - image: circleci/php:7.2
+      - image: circleci/php:7.1
       - image: circleci/mysql:5.7
     environment:
       - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
@@ -28,9 +28,13 @@ jobs:
             sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
             sudo apt-get update && sudo apt-get install mysql-client-5.7
             git submodule update --init
-            composer global require "phpunit/phpunit=7.0.*"
+            composer global require "phpunit/phpunit=5.7.*"
             composer global require wp-coding-standards/wpcs
             phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+      - run:
+          name: "Run PHPCS"
+          command: |
+            phpcs --standard=phpcs.ruleset.xml --extensions=php --colors -s -p -v .
       - run:
           name: "Run PHPUnit - Single Site"
           command: |
