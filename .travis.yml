@@ -25,8 +25,5 @@ matrix:
         - php: '7.1'
         - php: '7.0'
 
-before_script:
-    - composer wp-install
-
 script:
     - vendor/bin/phpunit tests/basic_theme
