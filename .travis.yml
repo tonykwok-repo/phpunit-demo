@@ -28,4 +28,4 @@ before_script:
   - php composer.phar install
 
 script:
-    - vendor/bin/phpunit --debug tests/basic_theme
+    - vendor/bin/phpunit --debug tests/basictheme
