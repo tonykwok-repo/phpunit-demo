@@ -31,11 +31,11 @@ before_script:
   - export SNIFFS_DIR=/tmp/sniffs
   - export WP_DEVELOP_DIR=/tmp/wordpress/
   - curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-7.5.9.phar
-  - git clone -b master --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git $PHPCS_DIR; fi
-  - git clone -b master --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $SNIFFS_DIR; fi
-  - git clone -b master --depth 1 https://github.com/wimg/PHPCompatibility.git $SNIFFS_DIR/PHPCompatibility; fi
-  - php $PHPCS_DIR/bin/phpcs --config-set installed_paths $SNIFFS_DIR; fi
-  - phpenv rehash; fi
+  - git clone -b master --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git $PHPCS_DIR
+  - git clone -b master --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $SNIFFS_DIR
+  - git clone -b master --depth 1 https://github.com/wimg/PHPCompatibility.git $SNIFFS_DIR/PHPCompatibility;
+  - php $PHPCS_DIR/bin/phpcs --config-set installed_paths $SNIFFS_DIR
+  - phpenv rehash;
   - mkdir -p $WP_DEVELOP_DIR
   - git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
   - mysql -e 'CREATE DATABASE wordpress_test;' -uroot
@@ -44,5 +44,5 @@ before_script:
 
 script:
   - find -L . -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
-  - php $PHPCS_DIR/bin/phpcs -p -s -v -n . --standard=WordPress --extensions=php; fi
+  - php $PHPCS_DIR/bin/phpcs -p -s -v -n . --standard=WordPress --extensions=php
   - vendor/bin/phpunit --debug tests/basictheme
