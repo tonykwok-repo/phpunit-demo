@@ -1,5 +1,9 @@
 # Travis CI (MIT License) configuration file for the solitude WordPress theme.
 # @link https://travis-ci.org/
+# if [[ "$SNIFF" == "1" ]];
+#     - npm install -g jscs; fi
+# - npm install -g jshint; fi
+# - wget https://develop.svn.wordpress.org/trunk/.jshintrc; fi
 
 language: php
 
@@ -9,8 +13,8 @@ notifications:
 
 php:
   - nightly
-  - 7.0
   - 7.1
+  - 7.0
 
 matrix:
     allow_failures:
@@ -18,23 +22,11 @@ matrix:
     fast_finish: true
 
     include:
-        - php: '7.0'
         - php: '7.1'
-          env: SNIFF=1
+        - php: '7.0'
 
 before_script:
-    - export PHPCS_DIR=/tmp/phpcs
-    - export SNIFFS_DIR=/tmp/sniffs
-    - curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-7.5.9.phar
-    - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git $PHPCS_DIR; fi
-    - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $SNIFFS_DIR; fi
-    - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/wimg/PHPCompatibility.git $SNIFFS_DIR/PHPCompatibility; fi
-    - if [[ "$SNIFF" == "1" ]]; then php $PHPCS_DIR/bin/phpcs --config-set installed_paths $SNIFFS_DIR; fi
-    - if [[ "$SNIFF" == "1" ]]; then phpenv rehash; fi
-    - if [[ "$SNIFF" == "1" ]]; then npm install -g jscs; fi
-    - if [[ "$SNIFF" == "1" ]]; then npm install -g jshint; fi
-    - if [[ "$SNIFF" == "1" ]]; then wget https://develop.svn.wordpress.org/trunk/.jshintrc; fi
+    - composer wp-install
 
 script:
-    - find -L . -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
-    - if [[ "$SNIFF" == "1" ]]; then php $PHPCS_DIR/bin/phpcs -p -s -v -n . --standard=WordPress --extensions=php; fi
+    - vendor/bin/phpunit tests/basic_theme
