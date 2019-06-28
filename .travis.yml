@@ -7,10 +7,6 @@
 
 language: php
 
-notifications:
-  on_success: never
-  on_failure: change
-
 php:
   - nightly
   - 7.2
