@@ -7,6 +7,9 @@
 
 language: php
 
+git:
+  clone: false
+
 php:
   - nightly
   - 7.2
