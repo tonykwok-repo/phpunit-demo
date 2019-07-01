@@ -1,6 +1,9 @@
 <?php
 include_once('../../../../src/functions.php');
 
+echo get_include_path();
+echo __DIR__;
+
 class Test_Basic_Theme extends WP_UnitTestCase {
 
 	function setUp() {
