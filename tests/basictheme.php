@@ -1,5 +1,5 @@
 <?php
-include_once('functions.php');
+include_once('../../../../src/functions.php');
 
 class Test_Basic_Theme extends WP_UnitTestCase {
 

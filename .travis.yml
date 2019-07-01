@@ -1,9 +1,5 @@
-# Travis CI (MIT License) configuration file for the solitude WordPress theme.
+# Travis CI (MIT License) configuration file
 # @link https://travis-ci.org/
-# if [[ "$SNIFF" == "1" ]];
-#     - npm install -g jscs; fi
-# - npm install -g jshint; fi
-# - wget https://develop.svn.wordpress.org/trunk/.jshintrc; fi
 
 language: php
 
@@ -11,21 +7,29 @@ git:
   clone: false
 
 php:
-  - nightly
   - 7.2
 
 env:
   - WP_VERSION=master WP_MULTISITE=0
 
 matrix:
-    allow_failures:
-    - php: nightly
     fast_finish: true
 
     include:
         - php: '7.2'
 
 before_script:
-  - export PHPCS_DIR=/tmp/phpcs
-  - export SNIFFS_DIR=/tmp/sniffs
-  - export WP_DEVELOP_DIR=/tmp/wordpress/
+  - export PHPCS_DIR=~/test/phpcs
+  - export SNIFFS_DIR=~/test/sniffs
+  - export WP_DEVELOP_DIR=~/test/wordpress
+  - git_repo=https://github.com/tonykwok-repo/phpunit-demo.git
+  - theme_slug=$(basename $(pwd))
+  - theme_dir=$WP_DEVELOP_DIR/wp-content/themes/$theme_slug
+  - mkdir -p $WP_DEVELOP_DIR
+  - git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
+  - git clone --depth=1 --branch=master $git_repo $theme_dir
+
+script:
+  # - phpunit
+  - echo $theme_slug
+  - echo $theme_dir
