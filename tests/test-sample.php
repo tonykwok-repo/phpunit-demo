@@ -1,22 +1,22 @@
 <?php
-include_once('../../../../src/functions.php');
+/**
+ * Class SampleTest
+ *
+ * @package Basic
+ */
 
-echo get_include_path();
-echo __DIR__;
-
-class Test_Basic_Theme extends WP_UnitTestCase {
-
-	function setUp() {
+class SampleTest extends WP_UnitTestCase {
+  function setUp() {
 		parent::setUp();
-		switch_theme( 'Basic Theme', 'Basic Theme' );
+		switch_theme( 'basic', 'basic' );
 	}
 
 	function testActiveTheme() {
-		$this->assertTrue( 'Basic Theme' == get_current_theme() );
+		$this->assertTrue( 'basic' == wp_get_theme() );
 	}
 
 	function testInactiveTheme() {
-		$this->assertFalse( 'Twenty Eleven' == get_current_theme() );
+		$this->assertFalse( 'Twenty Eleven' == wp_get_theme() );
 	}
 
 	function testjQueryIsLoaded() {
@@ -31,4 +31,3 @@ class Test_Basic_Theme extends WP_UnitTestCase {
 		$this->expectOutputString( $meta_description, basic_meta_description() );
 	}
 }
-?>
