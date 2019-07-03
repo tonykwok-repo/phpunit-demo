@@ -8,7 +8,7 @@
 class SampleTest extends WP_UnitTestCase {
   function setUp() {
 		parent::setUp();
-		switch_theme( 'basic', 'basic' );
+		switch_theme( 'basic' );
 	}
 
 	function testActiveTheme() {
