@@ -12,12 +12,12 @@ class SampleTest extends WP_UnitTestCase {
 	}
 
   function testActiveTheme() {
-    $this->assertTrue( wp_get_theme()->name == 'basic' );
+    $this->assertTrue( wp_get_theme() == 'basic' );
 		// $this->assertTrue( wp_get_theme()->get_stylesheet() == 'basic' );
 	}
 
 	function testInactiveTheme() {
-    $this->assertFalse( wp_get_theme()->name == 'Twenty Twelve' );
+    $this->assertFalse( wp_get_theme() == 'Twenty Twelve' );
 		// $this->assertFalse( wp_get_theme()->get_stylesheet() == 'Twenty Eleven' );
 	}
 
