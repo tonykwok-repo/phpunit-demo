@@ -8,7 +8,7 @@
 class SampleTest extends WP_UnitTestCase {
   function setUp() {
 		parent::setUp();
-		switch_theme( 'phpunit-test' );
+		switch_theme( 'phpunit-demo' );
 	}
 
   function testActiveTheme() {
