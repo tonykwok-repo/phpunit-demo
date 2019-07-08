@@ -28,15 +28,16 @@ function _register_theme() {
   $theme_root = dirname( $theme_dir );
 
   add_filter( 'theme_root', function() use ( $theme_root ) {
-          return $theme_root;
+    return $theme_root;
   });
   register_theme_directory( $theme_root );
 
   add_filter( 'pre_option_template', function() use ( $current_theme ) {
-          return $current_theme;
+    return $current_theme;
   });
+
   add_filter( 'pre_option_stylesheet', function() use ( $current_theme ) {
-          return $current_theme;
+    return $current_theme;
   });
 }
 
