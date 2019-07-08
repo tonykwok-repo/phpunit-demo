@@ -27,7 +27,6 @@ class SampleTest extends WP_UnitTestCase {
 	}
 
 	function testBasicMetaDescription() {
-    var_dump(basic_meta_description());
 		$meta_description = '<meta name="description" content="' . get_bloginfo( 'description' ) . '" />';
 		$this->expectOutputString( $meta_description, basic_meta_description() );
 	}
