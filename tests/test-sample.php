@@ -12,6 +12,7 @@ class SampleTest extends WP_UnitTestCase {
 	}
 
   function testActiveTheme() {
+    var_dump(wp_get_theme());
     $this->assertTrue( wp_get_theme() == 'basic' );
 		// $this->assertTrue( wp_get_theme()->get_stylesheet() == 'basic' );
 	}
