@@ -18,13 +18,14 @@
 
 #### Grab this repository including PHPUnit tests, configuration files, WordPress installation script
 `git clone --depth=50 --branch=master https://github.com/tonykwok-repo/phpunit-demo.git tonykwok-repo/phpunit-demo`
-`cd tonykwok-repo/phpunit-demo`
 
-#### Install PHPUnit 7 latest
+#### Install PHPUnit 7 latest into local folder
+`cd tonykwok-repo/phpunit-demo`
 `wget -O phpunit https://phar.phpunit.de/phpunit-7.phar`
 `chmod +x phpunit`
 
 #### Installs fresh WordPress installation and configures wp-config.php to use local MySQL, create schema for testing
+##### Be sure to provide a db-name that is not in-use by other WordPress instances
 `./bin/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] latest`
 
 #### Runs all tests in /test folder
