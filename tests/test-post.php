@@ -13,9 +13,15 @@ class TestPost extends WP_UnitTestCase {
 
   function testActiveTheme() {
     $this->assertTrue( wp_get_theme() == 'phpunit-demo' );
+    $this->assertFalse( wp_get_theme() == 'Twenty Twelve' );
 	}
 
+  /**
+   * @depends testActiveTheme
+   */
   function testMockPost() {
+    $user_ID = get_current_user_id();
+
     $mock_post = array(
       'post_title' => 'A New Post',
       'post_content' => 'Lorem ipsum dolor sit amet...',
@@ -28,6 +34,6 @@ class TestPost extends WP_UnitTestCase {
     $post_id = wp_insert_post($mock_post);
 
     $post_result = get_post($post_id);
-    $this->assertTrue( $post_author->post_title == 'A New Post' );
+    $this->assertTrue( $post_result->post_title == 'A New Post' );
   }
 }
