@@ -16,12 +16,16 @@
 * Install PHPUnit 7.13.x to run unit test in local instance
 
 
-git clone --depth=50 --branch=master https://github.com/tonykwok-repo/phpunit-demo.git tonykwok-repo/phpunit-demo
-cd tonykwok-repo/phpunit-demo
+#### Grab this repository including PHPUnit tests, configuration files, WordPress installation script
+`git clone --depth=50 --branch=master https://github.com/tonykwok-repo/phpunit-demo.git tonykwok-repo/phpunit-demo`
+`cd tonykwok-repo/phpunit-demo`
 
-wget -O phpunit https://phar.phpunit.de/phpunit-7.phar
-chmod +x phpunit
+#### Install PHPUnit 7 latest
+`wget -O phpunit https://phar.phpunit.de/phpunit-7.phar`
+`chmod +x phpunit`
 
-./bin/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] latest
+#### Installs fresh WordPress installation and configures wp-config.php to use local MySQL, create schema for testing
+`./bin/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] latest`
 
-./phpunit
+#### Runs all tests in /test folder
+`./phpunit`
