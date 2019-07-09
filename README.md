@@ -1,6 +1,8 @@
 # Starting PHPUnit Test
 ## Local and TravisCI Environmnts
 
+[![Build Status](https://travis-ci.org/tonykwok-repo/phpunit-demo.svg?branch=master)](https://travis-ci.org/tonykwok-repo/phpunit-demo)
+
 ### Requires the following installed before starting setup steps:
 * git
 * wget
