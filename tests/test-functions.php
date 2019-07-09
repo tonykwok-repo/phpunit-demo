@@ -1,11 +1,11 @@
 <?php
 /**
- * Class SampleTest
+ * Class TestFunctions
  *
  * @package Basic
  */
 
-class SampleTest extends WP_UnitTestCase {
+class TestFunctions extends WP_UnitTestCase {
   function setUp() {
 		parent::setUp();
 		switch_theme( 'phpunit-demo' );
