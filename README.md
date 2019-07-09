@@ -21,7 +21,9 @@
 
 #### Install PHPUnit 7 latest into local folder
 `cd tonykwok-repo/phpunit-demo`
+
 `wget -O phpunit https://phar.phpunit.de/phpunit-7.phar`
+
 `chmod +x phpunit`
 
 #### Installs fresh WordPress installation and configures wp-config.php to use local MySQL, create schema for testing
